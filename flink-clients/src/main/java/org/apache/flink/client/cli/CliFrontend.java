@@ -221,7 +221,9 @@ public class CliFrontend {
     protected void run(String[] args) throws Exception {
         LOG.info("Running 'run' command.");
 
+        // TODO 获取run动作，默认的配置项
         final Options commandOptions = CliFrontendParser.getRunCommandOptions();
+        // TODO 根据用户指定的p配置项，进行解析
         final CommandLine commandLine = getCommandLine(commandOptions, args, true);
 
         // evaluate help flag
@@ -234,9 +236,10 @@ public class CliFrontend {
                 validateAndGetActiveCommandLine(checkNotNull(commandLine));
 
         final ProgramOptions programOptions = ProgramOptions.create(commandLine);
-
+        // TODO 获取 用户的jar包和其他依赖
         final List<URL> jobJars = getJobJarAndDependencies(programOptions);
 
+        // TODO 获取有效配置 ：HA的id、target（session、per-job）、JobManager内存、TaskManager内存、每个TM的slot数。。。
         final Configuration effectiveConfiguration =
                 getEffectiveConfiguration(activeCommandLine, commandLine, programOptions, jobJars);
 
@@ -250,6 +253,7 @@ public class CliFrontend {
     /** Get all provided libraries needed to run the program from the ProgramOptions. */
     private List<URL> getJobJarAndDependencies(ProgramOptions programOptions)
             throws CliArgsException {
+        // TODO 指定的 -c 类名
         String entryPointClass = programOptions.getEntryPointClassName();
         String jarFilePath = programOptions.getJarFilePath();
 
@@ -1042,6 +1046,8 @@ public class CliFrontend {
         }
 
         // get action
+        // TODO bin/flink run -t yarn-per-job /opt/module/flink-1.12/examples/streaming/SocketWindowWordCount.jar --port 9999
+        //  action 就是这里的 run
         String action = args[0];
 
         // remove action from parameters
@@ -1114,13 +1120,16 @@ public class CliFrontend {
         EnvironmentInformation.logEnvironmentInfo(LOG, "Command Line Client", args);
 
         // 1. find the configuration directory
+        // TODO 获取flink的conf目录的路径
         final String configurationDirectory = getConfigurationDirectoryFromEnv();
 
         // 2. load the global configuration
+        // TODO 根据conf路径，加载配置
         final Configuration configuration =
                 GlobalConfiguration.loadConfiguration(configurationDirectory);
 
         // 3. load the custom command lines
+        // TODO 封装命令行接口：按照舒徐Generic、yarn、Default
         final List<CustomCommandLine> customCommandLines =
                 loadCustomCommandLines(configuration, configurationDirectory);
 

@@ -67,6 +67,7 @@ public class AbstractJobClusterExecutor<
             @Nonnull final Configuration configuration,
             @Nonnull final ClassLoader userCodeClassloader)
             throws Exception {
+        // TODO 将流图（streamGraph）转化成作业图（jobGraph）
         final JobGraph jobGraph = PipelineExecutorUtils.getJobGraph(pipeline, configuration);
 
         try (final ClusterDescriptor<ClusterID> clusterDescriptor =
